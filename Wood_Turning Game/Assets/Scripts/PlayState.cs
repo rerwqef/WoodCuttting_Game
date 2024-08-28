@@ -174,7 +174,8 @@ public class ColorPaintingState : PlayState
                 {
                   painter. isPainting = true;
                     painter.Paint(touchPosition);
-               //   Spraypaintingbottile.GetComponent<TouchDragSprayPaintingBottle>().setTouchposition(touchPosition);
+                    //   Spraypaintingbottile.GetComponent<TouchDragSprayPaintingBottle>().setTouchposition(touchPosition);
+                    if (!PlaySystem.Instance.doneSomethingInPainting) PlaySystem.Instance.doneSomethingInPainting=true;
                     //add dodomething in painting varible;
                 }
                 else if (touch.phase == TouchPhase.Ended)
@@ -195,7 +196,8 @@ public class ColorPaintingState : PlayState
                     painter.isPainting = true;
                 }
                 painter.Paint(mousePosition);
-             //   Spraypaintingbottile.GetComponent<TouchDragSprayPaintingBottle>().setTouchposition(mousePosition);
+                if (!PlaySystem.Instance.doneSomethingInPainting) PlaySystem.Instance.doneSomethingInPainting = true;
+                //   Spraypaintingbottile.GetComponent<TouchDragSprayPaintingBottle>().setTouchposition(mousePosition);
                 //Spraypaintingbottile.transform.LookAt(mousePosition);
                 //  Spraypaintingbottile.GetComponent<TouchDragSprayPaintingBottle>().SetTargetPosition(mousePosition);
             }
@@ -288,9 +290,10 @@ public class DecalPaintingState : PlayState
                 Touch touch = TouchUtility.GetTouch(0);
                 if (touch.phase == TouchPhase.Began && !TouchUtility.TouchedUI(touch.fingerId))
                 {
-                //    painter.Paint();
+                //  painter.Paint();
+                  painter. Paintdecals();
                 if (PlaySystem.Instance.doneSomethingInDecalPainting != true) PlaySystem.Instance.doneSomethingInDecalPainting = true;
-                //   painter. Paintdecals();
+             
             }
             }
         //}

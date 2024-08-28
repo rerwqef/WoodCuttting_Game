@@ -24,7 +24,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BrushTex:
-        m_Texture: {fileID: 2800000, guid: c573d852ac9bdb24b8d44705a810c51f, type: 3}
+        m_Texture: {fileID: 2800000, guid: 811a6ed4d8b384348896cb1884320269, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -91,8 +91,8 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _BrushUVClamp: {r: 0.21701665, g: 0.5721713, b: 0.40220183, a: 0.6598906}
-    - _BrushUVRect: {r: 0.21701665, g: 0.5721713, b: 0.18518518, a: 0.0877193}
+    - _BrushUVClamp: {r: 0.8484538, g: 0.12759104, b: 1, a: 0.21531034}
+    - _BrushUVRect: {r: 0.8484538, g: 0.12759104, b: 0.18518518, a: 0.0877193}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _CookieUVClamp: {r: 0.16166666, g: 0.4327778, b: 0.30055556, a: 0.5716667}
     - _CookieUVRect: {r: 0.16166666, g: 0.4327778, b: 0.1388889, a: 0.1388889}

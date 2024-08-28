@@ -88,44 +88,45 @@ public class Painter : MonoBehaviour
         }
     }
 
-}
-    /*  public void Paintdecals()
-      {
-          // Define the grid size; this determines how many decals will be placed across the subject
-          int gridResolutionX = 100; // Number of steps along the X axis
-          int gridResolutionY = 100; // Number of steps along the Y axis
 
-          for (int x = 0; x < gridResolutionX; x++)
-          {
-              for (int y = 0; y < gridResolutionY; y++)
-              {
-                  // Calculate normalized UV position on the subject
-                  Vector2 uvPos = new Vector2((float)x / (gridResolutionX - 1), (float)y / (gridResolutionY - 1));
+    public void Paintdecals()
+    {
+        // Get the mouse position (or touch position if using touch)
+        Vector2 mousePos = Input.mousePosition;
 
-                  Vector4 uvRect = new Vector4();
-                  uvRect.x = uvPos.x - brushSize / 2f / Screen.width;
-                  uvRect.y = uvPos.y - brushSize / 2f / Screen.height;
-                  uvRect.z = brushSize / Screen.width;
-                  uvRect.w = brushSize / Screen.height;
+        // Loop to create spray effect
+        for (int i = 0; i < sprayDensity; i++)
+        {
+            // Random offset for spray effect
+            Vector2 offset = Random.insideUnitCircle * brushSize / 2f;
+            Vector2 sprayPos = mousePos + offset;
 
-                  Vector4 uvClamp = new Vector4();
-                  uvClamp.x = Mathf.Max(0f, uvRect.x);
-                  uvClamp.y = Mathf.Max(0f, uvRect.y);
-                  uvClamp.z = Mathf.Min(1f, uvRect.x + uvRect.z);
-                  uvClamp.w = Mathf.Min(1f, uvRect.y + uvRect.w);
+            Vector4 uvRect = new Vector4();
+            uvRect.x = (sprayPos.x - brushSize / 2f) / Screen.width;
+            uvRect.y = (sprayPos.y - brushSize / 2f) / Screen.height;
+            uvRect.z = brushSize / Screen.width;
+            uvRect.w = brushSize / Screen.height;
 
-                  uvSpaceMaterial.SetTexture("_BrushTex", brushTexture);
-                  uvSpaceMaterial.SetMatrix("_PMatrix", mainCamera.projectionMatrix);
-                  uvSpaceMaterial.SetVector("_BrushUVRect", uvRect);
-                  uvSpaceMaterial.SetVector("_BrushUVClamp", uvClamp);
-                  uvSpaceMaterial.SetColor("_BrushColor", color);
+            Vector4 uvClamp = new Vector4();
+            uvClamp.x = Mathf.Max(0f, uvRect.x);
+            uvClamp.y = Mathf.Max(0f, uvRect.y);
+            uvClamp.z = Mathf.Min(1f, uvRect.x + uvRect.z);
+            uvClamp.w = Mathf.Min(1f, uvRect.y + uvRect.w);
 
-                  uvSpaceMaterial.SetTexture("_MainTex", subject.mainTexture);
-                  uvSpaceMaterial.SetMatrix("_MVMatrix", mainCamera.worldToCameraMatrix * subject.transform.localToWorldMatrix);
-                  uvSpaceMaterial.SetPass(0);
-                  subject.RenderUVSpace(uvSpaceMaterial);
-              }
-          }
-      }*/
+            uvSpaceMaterial.SetTexture("_BrushTex", brushTexture);
+            uvSpaceMaterial.SetMatrix("_PMatrix", mainCamera.projectionMatrix);
+            uvSpaceMaterial.SetVector("_BrushUVRect", uvRect);
+            uvSpaceMaterial.SetVector("_BrushUVClamp", uvClamp);
+            uvSpaceMaterial.SetColor("_BrushColor", color);
+
+            uvSpaceMaterial.SetTexture("_MainTex", subject.mainTexture);
+            uvSpaceMaterial.SetMatrix("_MVMatrix", mainCamera.worldToCameraMatrix * subject.transform.localToWorldMatrix);
+            uvSpaceMaterial.SetPass(0);
+            subject.RenderUVSpace(uvSpaceMaterial);
+        }
+
+    }
+
+  }
 
 //}
