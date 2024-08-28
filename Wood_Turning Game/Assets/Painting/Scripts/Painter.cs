@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Painter : MonoBehaviour
 {
@@ -15,16 +16,45 @@ public class Painter : MonoBehaviour
     public Texture2D brushTexture;
 
     private Camera mainCamera;
-
+    bool isspraypainting;
+    public Sprite Sparypainting;
+    public Sprite handpainting;
+  public  bool isPainting;
     private void Awake()
     {
         mainCamera = Camera.main;
     }
-
-    public void Paint()
+    public bool TouchOnObject(Vector3 position)
     {
-        // Get the mouse position (or touch position if using touch)
-        Vector2 mousePos = Input.mousePosition;
+        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            return hit.collider.gameObject == subject.gameObject;
+        }
+
+        return false;
+    }
+
+    public void SetColoRingType(Image img)
+    {
+
+        /* var state = PlaySystem.Instance.GetState() as ColorPaintingState;
+         if (state != null)
+         {
+             state.ChangePainterColor(color);
+         }*/
+
+        isspraypainting = !isspraypainting;
+        if (isspraypainting) img.sprite = Sparypainting;
+        else img.sprite = handpainting;
+    }
+
+    public void Paint(Vector3 position)
+    {
+        // Convert world position to screen position
+        Vector2 mousePos = mainCamera.WorldToScreenPoint(position);
 
         // Loop to create spray effect
         for (int i = 0; i < sprayDensity; i++)
@@ -56,9 +86,9 @@ public class Painter : MonoBehaviour
             uvSpaceMaterial.SetPass(0);
             subject.RenderUVSpace(uvSpaceMaterial);
         }
-       
-
     }
+
+}
     /*  public void Paintdecals()
       {
           // Define the grid size; this determines how many decals will be placed across the subject
@@ -98,4 +128,4 @@ public class Painter : MonoBehaviour
           }
       }*/
 
-}
+//}

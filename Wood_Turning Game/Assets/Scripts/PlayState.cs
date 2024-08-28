@@ -132,8 +132,10 @@ public class ColorPaintingState : PlayState
     public PaintingController target;
 
     public Painter painter;
-
+    public GameObject Spraypaintingbottile;
     public Transform targetTransform;
+    GameObject sprayBottleGo;
+  //  bool isPainting;
   //  public GameObject cutterIconParent;
     public ColorPaintingState(PlaySystem system) : base(system)
     {
@@ -143,37 +145,78 @@ public class ColorPaintingState : PlayState
     {
         painter.color = color;
     }
-
+   
     public override void Enter()
     {
       //  cutterIconParent.SetActive(false);
         painter.enabled = false;
+   sprayBottleGo=   Object.Instantiate(Spraypaintingbottile,Spraypaintingbottile.transform.position,Quaternion.identity);
         system.StartCoroutine(Schedule());        
     }
 
     public override void Exit()
     {
+        Object.Destroy(sprayBottleGo);
         GUIEventDispatcher.Instance.NotifyEvent(GUIEventID.ExitColorPainting);
     }
 
     public override void Update()
     {
-      //  if (GameSettings.Instance.canplay)
-       // {
-            if (TouchUtility.Enabled && TouchUtility.TouchCount > 0)
-            {
-                Touch touch = TouchUtility.GetTouch(0);
-                if (!TouchUtility.TouchedUI(touch.fingerId))
-                {
-                    painter.Paint();
-                if (PlaySystem.Instance.doneSomethingInPainting != true) PlaySystem.Instance.doneSomethingInPainting = true;
-            }
-            }
-       // }
+        // Check if the user is touching the screen or clicking the mouse
+        if (TouchUtility.Enabled && TouchUtility.TouchCount > 0)
+        {
+            Touch touch = TouchUtility.GetTouch(0);
+            Vector3 touchPosition = Camera.main.ScreenToWorldPoint(new Vector3(touch.position.x, touch.position.y, Camera.main.nearClipPlane));
 
+            if (painter.TouchOnObject(touchPosition))
+            {
+                if (touch.phase == TouchPhase.Began || touch.phase == TouchPhase.Moved)
+                {
+                  painter. isPainting = true;
+                    painter.Paint(touchPosition);
+               //   Spraypaintingbottile.GetComponent<TouchDragSprayPaintingBottle>().setTouchposition(touchPosition);
+                    //add dodomething in painting varible;
+                }
+                else if (touch.phase == TouchPhase.Ended)
+                {
+                    painter.isPainting = false;
+                   // Spraypaintingbottile.GetComponent<TouchDragSprayPaintingBottle>().StopMoving();
+                }
+            }
+        }
+        else if (Input.GetMouseButton(0)) // For mouse input
+        {
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane));
+
+            if (painter.TouchOnObject(mousePosition))
+            {
+                if (!painter.   isPainting)
+                {
+                    painter.isPainting = true;
+                }
+                painter.Paint(mousePosition);
+             //   Spraypaintingbottile.GetComponent<TouchDragSprayPaintingBottle>().setTouchposition(mousePosition);
+                //Spraypaintingbottile.transform.LookAt(mousePosition);
+                //  Spraypaintingbottile.GetComponent<TouchDragSprayPaintingBottle>().SetTargetPosition(mousePosition);
+            }
+            else
+            {
+                if (painter.isPainting)
+                {
+                     painter.isPainting = false;
+                }
+            //    Spraypaintingbottile.GetComponent<TouchDragSprayPaintingBottle>().StopMoving();
+            }
+        }
+        else
+        {
+            if (painter.isPainting)
+            {
+                painter.isPainting = false;
+            }
+        }
         targetTransform.Rotate(new Vector3(80f * Time.deltaTime, 0f, 0f));
     }
-
     public override void Reset()
     {
         target.ResetState();
@@ -245,7 +288,7 @@ public class DecalPaintingState : PlayState
                 Touch touch = TouchUtility.GetTouch(0);
                 if (touch.phase == TouchPhase.Began && !TouchUtility.TouchedUI(touch.fingerId))
                 {
-                    painter.Paint();
+                //    painter.Paint();
                 if (PlaySystem.Instance.doneSomethingInDecalPainting != true) PlaySystem.Instance.doneSomethingInDecalPainting = true;
                 //   painter. Paintdecals();
             }

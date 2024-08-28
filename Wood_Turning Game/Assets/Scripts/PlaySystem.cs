@@ -30,6 +30,7 @@ public class PlaySystem : MonoBehaviour
     public bool doneSomethingInCutting;
     public bool doneSomethingInPainting;
     public bool doneSomethingInDecalPainting;
+    public GameObject sparyBottle;
     public static PlaySystem Instance
     {
         get
@@ -135,7 +136,8 @@ public class PlaySystem : MonoBehaviour
             ColorPaintingState state = new ColorPaintingState(this);
             state.target = targetGo.GetComponent<PaintingController>();
             state.painter = painterGo.GetComponent<Painter>();
-     //       state.cutterIconParent = cutterIconParent;
+            //       state.cutterIconParent = cutterIconParent;
+            state.Spraypaintingbottile = sparyBottle;
             state.targetTransform = state.target.transform;
       
 
@@ -147,6 +149,7 @@ public class PlaySystem : MonoBehaviour
             state.brush = null;
             state.brushSpwanTransform = null;
             state.targetTransform = null;
+            
             SetState(state);
         }
         else if (currentState is ColorPaintingState)
